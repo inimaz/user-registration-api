@@ -8,6 +8,7 @@ services:
       - db
     environment:
       - DATABASE_URL=postgresql://postgres:mypass@db:5432/mydb
+      - EMAIL_SERVER_URL=http://email-server:80
     ports:
       - "8000:80"
     networks:
@@ -25,6 +26,16 @@ services:
       - api_network
     ports:
       - 5432:5432
+
+  email-server:
+    build:
+      context: .
+      dockerfile: Dockerfile.email_server_mock
+    restart: always
+    ports:
+      - "8001:80"
+    networks:
+      - api_network
 
 networks:
   api_network:

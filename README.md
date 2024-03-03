@@ -2,6 +2,13 @@
 
 Goal is to register an user and send them an email with the auth code to validate the registration. See the [architecture overview](./docs/Components%20view.png).
 
+# Structure of the repository
+
+- `docs/` contains the architecture schema.
+- `email_server_mock/` contains the mock of the email server.
+- `src/` contains the code for the user-api
+- `test/` contains all the unit tests.
+
 # ROADMAP
 
 - [x] Structure of the repo
@@ -11,9 +18,10 @@ Goal is to register an user and send them an email with the auth code to validat
 - [x] Setup the db
 - [ ] User registration logic
   - [x] Create user
-  - [ ] Send email to user containing the code
-- [ ] docker-compose deployment with DB and mocked email server
+  - [x] Send email to user containing the code
+- [x] docker-compose deployment with DB and mocked email server
 - [ ] Email sender
+- [ ] Validate activation code
 
 # Run it
 

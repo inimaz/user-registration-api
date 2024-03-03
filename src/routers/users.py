@@ -14,7 +14,7 @@ router = APIRouter()
 async def create_user_router(body:RegisterUser,db = Depends(get_db)):
     logger.info('/register was called')
     activation_code = create_user(db,body.email,body.password)
-    send_activation_email(activation_code)
+    send_activation_email(body.email, activation_code)
     return {
         "message": f"User {body.email} created successfully",
         }
