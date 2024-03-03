@@ -1,11 +1,9 @@
-from unittest.mock import MagicMock
 import pytest
-from httpx import AsyncClient
 from fastapi.testclient import TestClient
 from src.main import app 
 
 @pytest.mark.anyio
-async def test_root(mocker):
+async def test_root():
     with TestClient(app=app) as ac:
         response = ac.get("/")
     # Check that the response status is correct

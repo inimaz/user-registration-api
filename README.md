@@ -10,6 +10,8 @@ Goal is to register an user and send them an email with the auth code to validat
 - [x] docker-compose deployment with DB
 - [x] Setup the db
 - [ ] User registration logic
+  - [x] Create user
+  - [ ] Send email to user containing the code
 - [ ] docker-compose deployment with DB and mocked email server
 - [ ] Email sender
 
@@ -23,15 +25,27 @@ Go to `localhost:3000/docs` to see the docs of the API
 
 # Run it in local
 
-Same as above but with hot reloading of the src folder
+Same as above but building the source code every time
 
 ```
-docker-compose -f docker-compose.dev.yml up -d
+docker-compose up --build
 ```
 
 # Run the tests
 
 ```
+# Install general dependencies
 pip install -r requirements.txt
+
+# To install pytest + test dependencies
+pip install -r requirements.test.txt
+
+# Run the tests
 TEST_MODE=true python3 -m pytest
+```
+
+Run tests with debug logging
+
+```
+TEST_MODE=true python3 -m pytest --log-cli-level=DEBUG -rP
 ```

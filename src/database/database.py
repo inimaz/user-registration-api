@@ -11,7 +11,7 @@ TABLES = [
             id SERIAL PRIMARY KEY,
             email VARCHAR(255) UNIQUE NOT NULL,
             password_hash VARCHAR(255) NOT NULL,
-            code CHAR(4) NOT NULL,
+            activation_code CHAR(4) NOT NULL,
             is_active BOOLEAN NOT NULL DEFAULT FALSE
         );
     """
