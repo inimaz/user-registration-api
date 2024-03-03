@@ -8,6 +8,7 @@ Goal is to register an user and send them an email with the auth code to validat
 - [x] [C4 schema](https://c4model.com/) of the solution.
 - [x] Docker deployment
 - [x] docker-compose deployment with DB
+- [x] Setup the db
 - [ ] User registration logic
 - [ ] docker-compose deployment with DB and mocked email server
 - [ ] Email sender
@@ -32,5 +33,5 @@ docker-compose -f docker-compose.dev.yml up -d
 
 ```
 pip install -r requirements.txt
-// TODO:
+TEST_MODE=true python3 -m pytest
 ```

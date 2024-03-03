@@ -1,8 +1,12 @@
-from fastapi import FastAPI
+import os
+from .app import start_application, start_test_application
 
-app = FastAPI()
-
-# TODO: add the endpoints + logic
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
+###
+# Depending on the env variable TEST_MODE, we run different actions
+# This is to avoid running db setup actions in test mode
+#
+test_mode = os.environ.get('TEST_MODE')
+if test_mode:
+    app = start_test_application()
+else:
+    app = start_application()
