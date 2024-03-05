@@ -20,8 +20,10 @@ Goal is to register an user and send them an email with the auth code to validat
   - [x] Create user
   - [x] Send email to user containing the code
 - [x] docker-compose deployment with DB and mocked email server
-- [ ] Email sender
-- [ ] Validate activation code
+- [x] Email sender
+- [x] Validate activation code
+- [ ] Pretify code
+- [ ] Add more doc in README
 
 # Run it
 

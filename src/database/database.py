@@ -27,7 +27,9 @@ def get_db():
     try:
         yield conn
     finally:
-        conn.close()
+        if conn is not None:
+            conn.close()
+            logger.info("Connection closed")
 
 def create_tables(db):
     with db as conn:
