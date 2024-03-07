@@ -1,8 +1,12 @@
-import psycopg
-from ...utils.utils import generate_random_code
-from ...utils.password_utils import get_password_hash
 import logging
+
+import psycopg
+
+from ...utils.password_utils import get_password_hash
+from ...utils.utils import generate_random_code
+
 logger = logging.getLogger(__name__)
+
 
 # Function to create a new user in the database
 def create_user(db, email, password) -> str:
@@ -23,10 +27,10 @@ def create_user(db, email, password) -> str:
     except (Exception, psycopg.DatabaseError) as error:
         logger.error("Error while inserting user into PostgreSQL", error)
         raise error
-    
+
 
 # Function to get all users of the database
-def get_all_users(db, limit = 10):
+def get_all_users(db, limit=10):
     try:
         with db as conn:
             # Create a cursor to execute SQL commands
@@ -45,6 +49,7 @@ def get_all_users(db, limit = 10):
         logger.error("Error while retrieving all users from PostgreSQL", error)
         raise error
 
+
 # Function to get one user from the database
 def get_one_user_by_email(connection, email):
     try:
@@ -58,10 +63,7 @@ def get_one_user_by_email(connection, email):
             # Return the fetched users
             assert len(users) == 1
             user = users[0]
-            return User(
-                user
-                )
-        
+            return User(user)
 
     except (Exception, psycopg.DatabaseError) as error:
         logger.error("Error while retrieving one user from PostgreSQL", error)
@@ -82,7 +84,6 @@ def activate_user_by_email(connection, email):
             connection.commit()
             logger.info(f"User {email} updated successfully!")
 
-
     except (Exception, psycopg.DatabaseError) as error:
         logger.error(f"Error while updating user {email} in PostgreSQL")
         logger.error(str(error))
@@ -92,11 +93,11 @@ def activate_user_by_email(connection, email):
 # Wrap class to return a meaningful object in the CRUD
 class User:
     def __init__(self, user_tuple):
-        self.id=user_tuple[0]
-        self.email=user_tuple[1]
-        self.password_hash=user_tuple[2]
-        self.activation_code=user_tuple[3]
-        self.is_active=user_tuple[4]
-    
+        self.id = user_tuple[0]
+        self.email = user_tuple[1]
+        self.password_hash = user_tuple[2]
+        self.activation_code = user_tuple[3]
+        self.is_active = user_tuple[4]
+
     def __str__(self):
         return f"User(id={self.id}, user_email={self.email}, password_hash={self.password_hash}, activation_code={self.activation_code}, is_active={self.is_active})"

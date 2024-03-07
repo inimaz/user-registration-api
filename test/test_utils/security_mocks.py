@@ -1,5 +1,6 @@
 from unittest.mock import MagicMock
 
+
 def override_security():
     # Arrange
     credentials = MagicMock()

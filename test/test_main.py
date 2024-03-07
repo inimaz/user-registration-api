@@ -1,6 +1,8 @@
 import pytest
 from fastapi.testclient import TestClient
-from src.main import app 
+
+from src.main import app
+
 
 @pytest.mark.anyio
 async def test_root():

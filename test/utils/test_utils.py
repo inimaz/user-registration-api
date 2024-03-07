@@ -1,5 +1,6 @@
 from src.utils.utils import generate_random_code
 
+
 def test_generate_random_code():
     # Generate a random code
     code = generate_random_code()
