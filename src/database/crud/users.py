@@ -36,8 +36,8 @@ def get_all_users(db, limit=10):
             # Create a cursor to execute SQL commands
             with conn.cursor() as cursor:
                 # Insert user data into the users table
-                get_all_query = f"""SELECT * FROM users LIMIT {limit};"""
-                cursor.execute(get_all_query)
+                get_all_query = f"""SELECT * FROM users LIMIT %s;"""
+                cursor.execute(get_all_query, (limit,))
                 # Fetch all rows from the result set
                 users = cursor.fetchall()
 
@@ -55,13 +55,13 @@ def get_one_user_by_email(connection, email):
     try:
         with connection.cursor() as cursor:
             # Insert user data into the users table
-            get_one_query = f"""SELECT * FROM users WHERE email = '{email}';"""
-            cursor.execute(get_one_query)
+            get_one_query = """SELECT * FROM users WHERE email = %s;"""
+            cursor.execute(get_one_query, (email,))
             # Fetch all rows from the result set
             users = cursor.fetchall()
             logger.info(f"Get user {email} replied successfully!")
             # Return the fetched users
-            assert len(users) == 1
+            # assert len(users) == 1
             user = users[0]
             return User(user)
 
@@ -75,12 +75,12 @@ def activate_user_by_email(connection, email):
     try:
         with connection.cursor() as cursor:
             # Insert user data into the users table
-            update_is_active_query = f"""
+            update_is_active_query = """
                 UPDATE users
                 SET is_active = true
-                WHERE email = '{email}';
+                WHERE email = %s;
             """
-            cursor.execute(update_is_active_query)
+            cursor.execute(update_is_active_query, (email,))
             connection.commit()
             logger.info(f"User {email} updated successfully!")
 

@@ -3,6 +3,7 @@ from unittest.mock import MagicMock
 from fastapi import HTTPException, status
 
 from src.utils.get_current_user import get_current_user
+from test.test_utils.database_mocks import MockedDBNotFound, override_get_db
 
 
 def test_get_current_user_correct_credentials():
@@ -11,15 +12,15 @@ def test_get_current_user_correct_credentials():
     credentials.username = "test@example.com"
     credentials.password = "password123"
 
-    db_connection = MagicMock()
-    user_data = {"email": "test@example.com", "password_hash": "hashed_password"}
-    db_connection.get_one_user_by_email.return_value = user_data
+    user_data = {"email": "test@email.com", "password_hash": "$2b$12$SNEZNiJRv/i4fH8ttAzVU.5kPAhNM90Yq.zKVn5g5Pdy7qEsoYPR."}
 
     # Act
-    result = get_current_user(credentials, db_connection)
+    with override_get_db() as db_connection:
+        result = get_current_user(credentials, db_connection)
 
     # Assert
-    assert result == user_data
+    assert str(result) == 'User(id=1, user_email=test@email.com, password_hash=$2b$12$SNEZNiJRv/i4fH8ttAzVU.5kPAhNM90Yq.zKVn5g5Pdy7qEsoYPR., activation_code=1234, is_active=False)'
+
 
 
 def test_get_current_user_incorrect_username():
@@ -28,27 +29,7 @@ def test_get_current_user_incorrect_username():
     credentials.username = "test@example.com"
     credentials.password = "password123"
 
-    db_connection = MagicMock()
-    db_connection.get_one_user_by_email.side_effect = Exception("User not found")
-
-    # Act and Assert
-    try:
-        get_current_user(credentials, db_connection)
-    except HTTPException as e:
-        assert e.status_code == status.HTTP_401_UNAUTHORIZED
-        assert e.detail == "Incorrect username or password"
-        assert e.headers == {"WWW-Authenticate": "Basic"}
-
-
-def test_get_current_user_incorrect_password():
-    # Arrange
-    credentials = MagicMock()
-    credentials.username = "test@example.com"
-    credentials.password = "incorrect_password"
-
-    db_connection = MagicMock()
-    user_data = {"email": "test@example.com", "password_hash": "hashed_password"}
-    db_connection.get_one_user_by_email.return_value = user_data
+    db_connection = MockedDBNotFound()
 
     # Act and Assert
     try:

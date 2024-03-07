@@ -1,6 +1,10 @@
 # user-registration-api
 
-Goal is to register an user and send them an email with the auth code to validate the registration. See the [architecture overview](./docs/Components%20view.png).
+Goal is to register an user and send them an email with the auth code to validate the registration.
+
+# Architecture
+
+![alt text](./docs/Components%20view.png)
 
 # Structure of the repository
 
@@ -22,8 +26,9 @@ Goal is to register an user and send them an email with the auth code to validat
 - [x] docker-compose deployment with DB and mocked email server
 - [x] Email sender
 - [x] Validate activation code
-- [ ] Pretify code
-- [ ] Add more doc in README
+- [x] Pretify code
+- [x] Add more doc in README
+- [ ] Unvalidate the `activate` call if the call comes more than 1min after the `register` call
 
 # Run it
 
@@ -31,7 +36,19 @@ Goal is to register an user and send them an email with the auth code to validat
 docker-compose up -d
 ```
 
-Go to `localhost:3000/docs` to see the docs of the API
+Go to `http://localhost:8000/docs` to see the docs of the API
+
+The flow works like this:
+
+1. User registers by calling `/register` API with `email` and `password` in the body of the request.
+2. We store the details in our db.
+3. We send an email to the user using the `email_server_mock`. In this example, since the email is not sent, check for the log of email server.
+   ![alt text](./docs/email_server_activation_code.png)
+
+The code in this example is `4466`
+
+4. Call `/activate` using previous email and password `BASIC AUTH`. As body, give the `activation_code` retrieved in the previous step.
+5. User activated!.
 
 # Run it in local
 

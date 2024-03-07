@@ -7,6 +7,9 @@ logger = logging.getLogger(__name__)
 
 
 def send_activation_email(email: str, activation_code: str):
+    if os.environ.get("TEST_MODE"):
+        logger.debug('TEST_MODE true. Not sending the email')
+        return True
     EMAIL_SERVER_URL = os.environ.get("EMAIL_SERVER_URL", None)
     data = {"email": f"{email}", "activation_code": f"{activation_code}"}
     logger.info(data)

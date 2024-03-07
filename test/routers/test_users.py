@@ -16,7 +16,10 @@ app.dependency_overrides[security] = override_security
 
 
 def override_activation_email():
-    return True
+    def mock_email(email, activation_code):
+        return True
+
+    return mock_email
 
 
 app.dependency_overrides[send_activation_email] = override_activation_email
@@ -40,7 +43,8 @@ async def test_activate_user():
     with TestClient(app=app) as ac:
         response = ac.post("/activate", json=input_body)
     # Check that the response status is correct
-    assert response.status_code == 201
+    print(str(response.json()))
+    assert response.status_code == 200
     # Check that the response body is correct
-    expected_response = {"message": "User test@email.com created successfully"}
+    expected_response = {"message": "User test@email.com activated."}
     assert response.json() == expected_response

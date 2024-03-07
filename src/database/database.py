@@ -6,6 +6,8 @@ import psycopg
 
 logger = logging.getLogger(__name__)
 POSTGRESQL_DATABASE_URL = os.environ.get("DATABASE_URL", None)
+
+# Tables to be created at the start of the service
 TABLES = [
     """
         CREATE TABLE IF NOT EXISTS users (
