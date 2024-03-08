@@ -15,11 +15,11 @@ TABLES = [
             email VARCHAR(255) UNIQUE NOT NULL,
             password_hash VARCHAR(255) NOT NULL,
             activation_code CHAR(4) NOT NULL,
+            activation_code_expiration_time TIMESTAMP NOT NULL,
             is_active BOOLEAN NOT NULL DEFAULT FALSE
         );
     """
 ]
-
 
 @contextmanager
 def get_db():

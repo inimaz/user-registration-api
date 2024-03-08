@@ -3,14 +3,14 @@ import logging
 import psycopg
 
 from ...utils.password_utils import get_password_hash
-from ...utils.utils import generate_random_code
+from ...utils.utils import  generate_random_code_and_expiration_time
 
 logger = logging.getLogger(__name__)
 
 
 # Function to create a new user in the database
 def create_user(db, email, password) -> str:
-    activation_code = generate_random_code()
+    activation_code,activation_code_expiration_time = generate_random_code_and_expiration_time()
     password_hash = get_password_hash(password)
 
     try:
@@ -18,8 +18,8 @@ def create_user(db, email, password) -> str:
             # Create a cursor to execute SQL commands
             with conn.cursor() as cursor:
                 # Insert user data into the users table
-                insert_query = """INSERT INTO users (email, password_hash, activation_code) VALUES (%s, %s, %s)"""
-                cursor.execute(insert_query, (email, password_hash, activation_code))
+                insert_query = """INSERT INTO users (email, password_hash, activation_code, activation_code_expiration_time) VALUES (%s, %s, %s, %s)"""
+                cursor.execute(insert_query, (email, password_hash, activation_code, activation_code_expiration_time))
                 conn.commit()
         logger.info("User created successfully!")
         return activation_code
@@ -97,7 +97,8 @@ class User:
         self.email = user_tuple[1]
         self.password_hash = user_tuple[2]
         self.activation_code = user_tuple[3]
-        self.is_active = user_tuple[4]
+        self.activation_code_expiration_time = user_tuple[4]
+        self.is_active = user_tuple[5]
 
     def __str__(self):
-        return f"User(id={self.id}, user_email={self.email}, password_hash={self.password_hash}, activation_code={self.activation_code}, is_active={self.is_active})"
+        return f"User(id={self.id}, user_email={self.email}, password_hash={self.password_hash}, activation_code={self.activation_code}, activation_code_expiration_time={self.activation_code_expiration_time} is_active={self.is_active})"

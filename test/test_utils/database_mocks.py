@@ -1,4 +1,8 @@
 from contextlib import contextmanager
+from datetime import datetime
+
+timestamp_str = "2099-03-08 09:39:50.365025"
+timestamp = datetime.strptime(timestamp_str, "%Y-%m-%d %H:%M:%S.%f")
 
 
 class MockedCursor:
@@ -15,6 +19,7 @@ class MockedCursor:
                 "test@email.com",
                 "$2b$12$SNEZNiJRv/i4fH8ttAzVU.5kPAhNM90Yq.zKVn5g5Pdy7qEsoYPR.",
                 "1234",
+                timestamp,
                 False,
             )
         ]

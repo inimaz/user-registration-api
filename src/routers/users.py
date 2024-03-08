@@ -5,6 +5,8 @@ import psycopg
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 
+from ..utils.utils import is_expired
+
 from ..database.crud.users import activate_user_by_email, create_user
 from ..database.database import get_db
 from ..schemas import ActivateUser, RegisterUser
@@ -53,6 +55,13 @@ def activate_current_user(
             return {
                 "message": f"User {user.email} is already active. Nothing to do here"
             }
+        
+        if is_expired(user.activation_code_expiration_time):
+            # Wrong activation code
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="The activation_code is not valid anymore. It has reached the expiration limit",
+            )
 
         # The activation code is correct, we update the user to active
         activate_user_by_email(db_connection, user.email)

@@ -19,7 +19,7 @@ def test_get_current_user_correct_credentials():
         result = get_current_user(credentials, db_connection)
 
     # Assert
-    assert str(result) == 'User(id=1, user_email=test@email.com, password_hash=$2b$12$SNEZNiJRv/i4fH8ttAzVU.5kPAhNM90Yq.zKVn5g5Pdy7qEsoYPR., activation_code=1234, is_active=False)'
+    assert str(result) == 'User(id=1, user_email=test@email.com, password_hash=$2b$12$SNEZNiJRv/i4fH8ttAzVU.5kPAhNM90Yq.zKVn5g5Pdy7qEsoYPR., activation_code=1234, activation_code_expiration_time=2099-03-08 09:39:50.365025 is_active=False)'
 
 
 
