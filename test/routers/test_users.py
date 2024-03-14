@@ -1,5 +1,9 @@
 from test.test_utils.database_mocks import override_get_db
 from test.test_utils.security_mocks import override_security
+from unittest.mock import Mock
+
+# Create a Mock object
+mock_email = Mock()
 
 import pytest
 from fastapi.testclient import TestClient
@@ -16,10 +20,11 @@ app.dependency_overrides[security] = override_security
 
 
 def override_activation_email():
-    def mock_email(email, activation_code):
+    def mock_email_func(email, activation_code):
+        mock_email(email, activation_code)
         return True
 
-    return mock_email
+    return mock_email_func
 
 
 app.dependency_overrides[send_activation_email] = override_activation_email
@@ -35,6 +40,7 @@ async def test_create_user():
     # Check that the response body is correct
     expected_response = {"message": "User test@email.com created successfully"}
     assert response.json() == expected_response
+    mock_email.assert_called()
 
 
 @pytest.mark.anyio

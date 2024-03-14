@@ -11,7 +11,7 @@ from ..database.crud.users import activate_user_by_email, create_user
 from ..database.database import get_db
 from ..schemas import ActivateUser, RegisterUser
 from ..utils.get_current_user import get_current_user
-from ..utils.send_email import send_activation_email
+from ..utils.send_email import send_activation_email_factory
 
 logger = logging.getLogger(__name__)
 
@@ -22,7 +22,7 @@ security = HTTPBasic()
 
 
 @router.post("/register", status_code=status.HTTP_201_CREATED)
-async def create_user_router(body: RegisterUser, db=Depends(get_db)):
+async def create_user_router(body: RegisterUser, db=Depends(get_db), send_activation_email=Depends(send_activation_email_factory())):
     logger.info("/register was called")
     try:
         activation_code = create_user(db, body.email, body.password)
@@ -41,7 +41,7 @@ async def create_user_router(body: RegisterUser, db=Depends(get_db)):
 def activate_current_user(
     body: ActivateUser,
     credentials: Annotated[HTTPBasicCredentials, Depends(security)],
-    db=Depends(get_db),
+    db=Depends(get_db), 
 ):
     with db as db_connection:
         user = get_current_user(credentials, db_connection)

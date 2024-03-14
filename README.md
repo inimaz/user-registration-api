@@ -80,3 +80,9 @@ Run tests with debug logging
 ```
 TEST_MODE=true python3 -m pytest --log-cli-level=DEBUG -rP
 ```
+
+Run the tests to see the coverage
+
+```
+TEST_MODE=true python3 -m pytest --cov
+```

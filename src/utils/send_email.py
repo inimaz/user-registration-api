@@ -6,6 +6,8 @@ import requests
 logger = logging.getLogger(__name__)
 
 
+def send_activation_email_factory():
+    return send_activation_email
 def send_activation_email(email: str, activation_code: str):
     if os.environ.get("TEST_MODE"):
         logger.debug('TEST_MODE true. Not sending the email')
